@@ -24,10 +24,19 @@ const RestaurantCard = ({ restaurant }) => {
     discount
   } = restaurant;
 
+  const [imageError, setImageError] = React.useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <Card
       sx={{
         cursor: 'pointer',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
         '&:hover': {
           transform: 'translateY(-4px)',
           transition: 'transform 0.2s ease-in-out'
@@ -35,13 +44,41 @@ const RestaurantCard = ({ restaurant }) => {
       }}
       onClick={() => navigate(`/restaurant/${id}`)}
     >
-      <Box sx={{ position: 'relative' }}>
-        <CardMedia
-          component="img"
-          height="200"
-          image={image}
-          alt={name}
-        />
+      <Box sx={{ position: 'relative', paddingTop: '56.25%' /* 16:9 aspect ratio */ }}>
+        {!imageError ? (
+          <CardMedia
+            component="img"
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+            image={image}
+            alt={name}
+            onError={handleImageError}
+          />
+        ) : (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'grey.200',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Typography color="text.secondary">
+              {name}
+            </Typography>
+          </Box>
+        )}
         {discount && (
           <Chip
             label={`${discount}% OFF`}

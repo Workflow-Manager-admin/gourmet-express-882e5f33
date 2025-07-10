@@ -18,7 +18,7 @@ const restaurants = [
     rating: 4.5,
     deliveryTime: 30,
     priceRange: "₹₹₹",
-    image: "https://source.unsplash.com/featured/?italian,food",
+    image: "https://source.unsplash.com/1600x900/?italian,restaurant,pasta",
     discount: 20
   },
   {
@@ -68,13 +68,24 @@ const RestaurantList = () => {
         </TextField>
       </Box>
 
-      <Grid container spacing={3}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)'
+          },
+          gap: 3
+        }}
+      >
         {restaurants.map((restaurant) => (
-          <Grid item xs={12} sm={6} md={4} key={restaurant.id}>
+          <Box key={restaurant.id}>
             <RestaurantCard restaurant={restaurant} />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };

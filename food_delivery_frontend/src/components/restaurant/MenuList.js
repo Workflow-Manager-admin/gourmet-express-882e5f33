@@ -30,7 +30,7 @@ const menuCategories = [
         name: "Bruschetta",
         description: "Grilled bread rubbed with garlic and topped with tomatoes, olive oil, salt and pepper",
         price: 299,
-        image: "https://source.unsplash.com/featured/?bruschetta",
+        image: "https://source.unsplash.com/1600x900/?bruschetta,appetizer",
         isVeg: true,
         spicyLevel: "mild"
       },
@@ -39,7 +39,7 @@ const menuCategories = [
         name: "Calamari Fritti",
         description: "Crispy fried squid rings served with marinara sauce",
         price: 399,
-        image: "https://source.unsplash.com/featured/?calamari",
+        image: "https://source.unsplash.com/1600x900/?calamari,seafood",
         isVeg: false,
         spicyLevel: "medium"
       }
@@ -117,25 +117,59 @@ const MenuList = ({ restaurantId }) => {
           </Typography>
           <List>
             {category.items.map((item) => (
-              <Card key={item.id} sx={{ mb: 2 }}>
+              <Card 
+                key={item.id} 
+                sx={{ 
+                  mb: 2,
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' }
+                }}
+              >
+                <Box sx={{ 
+                  position: 'relative',
+                  width: { xs: '100%', sm: 120 },
+                  height: { xs: 200, sm: 120 }
+                }}>
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                    image={item.image}
+                    alt={item.name}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://source.unsplash.com/featured/?${item.name.replace(' ', ',')},food`;
+                    }}
+                  />
+                </Box>
                 <ListItem
                   alignItems="flex-start"
+                  sx={{
+                    flexGrow: 1,
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    gap: { xs: 1, sm: 0 }
+                  }}
                   secondaryAction={
                     <Button
                       variant="contained"
                       startIcon={<AddIcon />}
                       onClick={() => handleOpenDialog(item)}
+                      sx={{
+                        position: { xs: 'relative', sm: 'absolute' },
+                        right: { xs: 0, sm: 16 },
+                        mt: { xs: 2, sm: 0 }
+                      }}
                     >
                       Add
                     </Button>
                   }
                 >
-                  <CardMedia
-                    component="img"
-                    sx={{ width: 120, height: 120, borderRadius: 1, mr: 2 }}
-                    image={item.image}
-                    alt={item.name}
-                  />
                   <ListItemText
                     primary={
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
